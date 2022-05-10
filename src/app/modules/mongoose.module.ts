@@ -1,4 +1,4 @@
-/* import mongoose, { ConnectionOptions } from "mongoose";
+import mongoose, { ConnectionOptions } from "mongoose";
 
 
 function connect(): Promise<typeof mongoose> {
@@ -13,4 +13,3 @@ function connect(): Promise<typeof mongoose> {
 }
 
 export default { connect };
- */
