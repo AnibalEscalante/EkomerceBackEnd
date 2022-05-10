@@ -3,8 +3,8 @@ dotenv.config();
 import express, { Express } from "express";
 import morgan from "morgan";
 import cors from "cors";
-import logModule from "./modules/log.module";/* 
-import mongooseModule from "./modules/mongoose.module"; */
+import logModule from "./modules/log.module";
+import mongooseModule from "./modules/mongoose.module";
 import { createServer } from "http";
 
 async function main(){
@@ -17,8 +17,8 @@ async function main(){
   server.use(cors());
 
   let httpServer = createServer(server); 
- try {/* 
-    await mongooseModule.connect(); */
+ try {
+    await mongooseModule.connect();
     logModule.success('Database connection successful');
 
 
