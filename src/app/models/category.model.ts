@@ -3,8 +3,8 @@ import { Product } from "./product.model";
 export interface Category{
     _id: string | number;
     name: string;
-    products?: Product[];
-    categories?: Category[];
+    products: String[]; //Tipo product
+    categories: String[];//tipo category
     updatedAt?: Date;
     createdAt?: Date;
 }

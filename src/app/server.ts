@@ -6,6 +6,7 @@ import cors from "cors";
 import logModule from "./modules/log.module";
 import mongooseModule from "./modules/mongoose.module";
 import { createServer } from "http";
+import components from "./components";
 
 async function main(){
   const server: Express = express();
@@ -15,6 +16,7 @@ async function main(){
   server.use(express.urlencoded({ extended: true }));
   server.use(morgan('dev'));
   server.use(cors());
+  server.use('/api', ...components);
 
   let httpServer = createServer(server); 
  try {
