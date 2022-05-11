@@ -7,8 +7,8 @@ export interface Product{
     description: string;
     price: string;
     image: string;
-    discount?: string;
-    features?: Feature[];
+    discount: string;
+    features: string[]; ///tipo Feature///
     updatedAt?: Date;
     createdAt?: Date;
 }
