@@ -56,6 +56,18 @@ router.patch('/:id', async (req: Request, res: Response) => {
   }
 });
 
+router.get('name/:id', async (req: Request, res: Response) => {
+  const id: string = req.params['id'];
+  try {
+    const result: any | null = await controller.getCategoryName(id);
+    response.success(req, res, result);
+  }
+  catch (error) {
+    console.error(error);
+    response.error(req, res, 'Invalid information', 500);
+  }
+});
+
 router.delete('/:id', async (req: Request, res: Response) => {
   const id: string = req.params['id'];
 
