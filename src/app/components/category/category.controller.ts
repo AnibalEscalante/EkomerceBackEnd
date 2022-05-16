@@ -21,6 +21,16 @@ async function deleteCategory(id: string): Promise<Category | null>{
   return repository.deleteCategory(id);
 }
 
+async function getCategoryName(id: string): Promise<any | null>{
+  const category: Category | null = await repository.getCategory(id);
+  const result = {
+    id: category?._id,
+    name: category?.name
+  };
+  return result;
+}
+
+
 
 
 export default {
@@ -28,5 +38,6 @@ export default {
   getCategorys,
   getCategory,
   updateCategory,
-  deleteCategory
+  deleteCategory,
+  getCategoryName
 };
