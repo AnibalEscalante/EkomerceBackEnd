@@ -1,7 +1,7 @@
 import { Category } from '../../models/category.model';
 import model from './category.schema';
 
-async function getCategorys(): Promise<Category[]>{
+async function getCategories(): Promise<Category[]>{
   return model.find();
 }
 
@@ -23,7 +23,7 @@ async function deleteCategory(id: string): Promise<Category | null>{
 
 
 export default {
-  getCategorys,
+  getCategories,
   getCategory,
   addCategory,
   updateCategory,

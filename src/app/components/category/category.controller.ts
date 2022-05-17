@@ -1,8 +1,8 @@
 import { Category } from "../../models/category.model";
 import repository from "./category.repository";
 
-function getCategorys(): Promise<Category[]>{
-  return repository.getCategorys();
+function getCategories(): Promise<Category[]>{
+  return repository.getCategories();
 }
 
 function getCategory(id: string): Promise<Category | null>{
@@ -30,14 +30,28 @@ async function getCategoryName(id: string): Promise<any | null>{
   return result;
 }
 
+async function getCategoriesName(): Promise<Category[] | null>{
+  const categories: Category[] | null = await repository.getCategories();
+  let data: any;
+  let result: Category[] | null;
+  for(let category of categories){
+    data = {
+      id: category._id,
+      name: category.name
+    }
+    result!.push(data)
+  }
+  return result!;
+}
 
 
 
 export default {
   addCategory,
-  getCategorys,
+  getCategories,
   getCategory,
   updateCategory,
   deleteCategory,
-  getCategoryName
+  getCategoryName,
+  getCategoriesName
 };
