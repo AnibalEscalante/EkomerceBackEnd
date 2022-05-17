@@ -7,7 +7,18 @@ const router: Router = express.Router();
 
 router.get('/all', async (req: Request, res: Response) => {
   try {
-    const result: Category[] = await controller.getCategorys();
+    const result: Category[] = await controller.getCategories();
+    response.success(req, res, result);
+  }
+  catch (error) {
+    console.error(error);
+    response.error(req, res, 'Invalid information', 500);
+  }
+});
+
+router.get('/all/name', async (req: Request, res: Response) => {
+  try {
+    const result: Category[] | null = await controller.getCategoriesName();
     response.success(req, res, result);
   }
   catch (error) {
@@ -56,7 +67,7 @@ router.patch('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.get('name/:id', async (req: Request, res: Response) => {
+router.get('/name/:id', async (req: Request, res: Response) => {
   const id: string = req.params['id'];
   try {
     const result: any | null = await controller.getCategoryName(id);
