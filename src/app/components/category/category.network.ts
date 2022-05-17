@@ -5,7 +5,7 @@ import controller from "./category.controller";
 
 const router: Router = express.Router();
 
-router.get('/all/xd', async (req: Request, res: Response) => {
+router.get('/all', async (req: Request, res: Response) => {
   try {
     const result: Category[] = await controller.getCategories();
     response.success(req, res, result);

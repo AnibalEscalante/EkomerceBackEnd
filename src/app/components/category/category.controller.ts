@@ -32,16 +32,15 @@ async function getCategoryName(id: string): Promise<any | null>{
 
 async function getCategoriesName(): Promise<Category[] | null>{
   const categories: Category[] | null = await repository.getCategories();
-  let data: any;
-  let result: Category[] | null;
+  let result: Category[] | null = [];
   for(let category of categories){
-    data = {
+    const data: any = {
       id: category._id,
       name: category.name
     }
-    result!.push(data)
+    result.push(data)
   }
-  return result!;
+  return result;
 }
 
 
