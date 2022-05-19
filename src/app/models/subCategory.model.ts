@@ -1,7 +1,7 @@
-export interface Category{
+export interface SubCategory{
     _id: string;
     name: string;
-    subCategories: String[];//tipo category
+    products: String[]; //Tipo product
     updatedAt?: Date;
     createdAt?: Date;
 }
