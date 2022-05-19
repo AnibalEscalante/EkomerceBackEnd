@@ -1,4 +1,5 @@
 import { Category } from "../../models/category.model";
+import subCategoryController from "../subCategory/subCategory.controller";
 import repository from "./category.repository";
 
 function getCategories(): Promise<Category[]>{
@@ -30,13 +31,15 @@ async function getCategoryName(id: string): Promise<any | null>{
   return result;
 }
 
+
 async function getCategoriesName(): Promise<Category[] | null>{
   const categories: Category[] | null = await repository.getCategories();
   let result: Category[] | null = [];
   for(let category of categories){
     const data: any = {
       id: category._id,
-      name: category.name
+      name: category.name,
+      categories: await subCategoryController.getSubCategoriesName()
     }
     result.push(data)
   }
