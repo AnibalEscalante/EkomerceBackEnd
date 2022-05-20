@@ -7,8 +7,7 @@ const definition: Partial<Record<keyof User, any>> = {
   lastNameM: { type: String, required: true, trim: true },
   lastNameP: { type: String, required: true, trim: true },
   movilPhone: { type: String, trim: true },
-  rut: { type: String, required: true, trim: true },
-  email: { type: String, required: true, trim: true },
+  rut: { type: String, required: true, trim: true }
 
 };
 
