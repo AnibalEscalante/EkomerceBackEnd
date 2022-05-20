@@ -3,7 +3,6 @@ export interface User {
     name: string;
     lastNameP: string;
     lastNameM: string;
-    email:string;
     rut: string;
     movilPhone?: string;
     myMethodPayment?: string[]
