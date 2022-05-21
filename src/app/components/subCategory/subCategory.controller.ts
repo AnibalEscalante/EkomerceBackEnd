@@ -22,21 +22,20 @@ async function deleteSubCategory(id: string): Promise<SubCategory | null>{
 }
 
 
-async function getSubCategoriesName(): Promise<any[] | null>{
-  const subCategories: SubCategory[] | null = await repository.getSubCategories();
+async function getSubCategoriesName(idSubCategories: string[]): Promise<any[] | null>{
   let result: any[] | null = [];
-  if(subCategories){
-    for(let subCategory of subCategories){
+  for(let idSubCategory of idSubCategories){
+    const response: SubCategory | null = await repository.getSubCategory(idSubCategory);
+    if(response){
       const data = {
-        id: subCategory._id,
-        name: subCategory.name
+        id: response._id,
+        name: response.name
       };
       result.push(data)
     }
   }
   return result;
 }
-
 export default {
   addSubCategory,
   getSubCategories,

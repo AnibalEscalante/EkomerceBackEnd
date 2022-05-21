@@ -32,6 +32,7 @@ async function getCategoryName(id: string): Promise<any | null>{
 }
 
 
+
 async function getCategoriesName(): Promise<Category[] | null>{
   const categories: Category[] | null = await repository.getCategories();
   let result: Category[] | null = [];
@@ -39,7 +40,7 @@ async function getCategoriesName(): Promise<Category[] | null>{
     const data: any = {
       id: category._id,
       name: category.name,
-      categories: await subCategoryController.getSubCategoriesName()
+      subCategories: await subCategoryController.getSubCategoriesName(category.subCategories)
     }
     result.push(data)
   }
