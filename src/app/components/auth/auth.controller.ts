@@ -71,7 +71,7 @@ async function getAuthByAuthenticated(authenticated: string): Promise<Auth | nul
   return repository.getAuthByAuthenticated(authenticated);
 }
 
-async function updateEmail(id: string, user: any): Promise<Auth | null>{
+async function updateEmail(id: string, user: Partial<Auth>): Promise<Auth | null>{
   return repository.updateEmail(id, user);
 }
 
