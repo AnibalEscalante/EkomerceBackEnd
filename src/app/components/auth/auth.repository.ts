@@ -14,7 +14,7 @@ async function getAuthByAuthenticated(authenticated: string): Promise<Auth | nul
   return model.findOne({ authenticated });
 }
 
-async function updateEmail(id: string, user: any): Promise<Auth | null>{
+async function updateEmail(id: string, user: Partial<Auth>): Promise<Auth | null>{
   return model.findOneAndUpdate({ authenticated: id }, { email: user.email });
 }
 

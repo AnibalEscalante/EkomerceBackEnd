@@ -9,20 +9,25 @@ async function getUser(id: string): Promise<User | null>{
   return model.findOne({ _id: id });
 }
 
-async function getContactsUser(id: string): Promise<User | null>{
-  return model.findOne({_id: id }).populate('idContacts','nickName idUser','Contact');
-}
-
-async function getUserByNickName(nick: string): Promise<User | null>{
-  return model.findOne({ nickName: nick });
-}
-
 async function addUser(user: User): Promise<User>{
   return model.create<User>(user);
 }
 
 async function updateUser(id: string, user: Partial<User>): Promise<User | null>{
   return model.findOneAndUpdate({ _id: id }, user);
+}
+
+async function deleteUser(id: string): Promise<User | null>{
+  return model.findOneAndRemove({_id: id});
+}
+
+/*
+async function getContactsUser(id: string): Promise<User | null>{
+  return model.findOne({_id: id }).populate('idContacts','nickName idUser','Contact');
+} 
+
+async function getUserByNickName(nick: string): Promise<User | null>{
+  return model.findOne({ nickName: nick });
 }
 
 async function removeSavedProject(idUser: string, idProject: string): Promise<User | null>{
@@ -73,22 +78,12 @@ async function removeRequestReply(idUserSender: string, idRequestReply: string):
       }
     });
 }
-
-async function deleteUser(id: string): Promise<User | null>{
-  return model.findOneAndRemove({_id: id});
-}
+*/
 
 export default {
   getUsers,
   getUser,
-  getContactsUser,
-  getUserByNickName,
   addUser,
   updateUser,
-  deleteUser,
-  removeSavedProject,
-  removeCollaboratingProject,
-  removeContact,
-  removeRequest,
-  removeRequestReply
+  deleteUser
 };
