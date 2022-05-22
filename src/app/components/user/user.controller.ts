@@ -36,6 +36,10 @@ async function updateUser(id: string, user: Partial<User & Auth>): Promise<any |
   let updatedAuth: Auth | null = null;
   let updatedUser: User | null = null;
   let response: Partial<User & Auth> | null = null;
+  
+  const updateAuth: Partial<Auth> = {
+    email: user.email
+  }
   const updateUser: Partial<User> = {
     name: user.name,
     lastNameP: user.lastNameP,
@@ -44,7 +48,7 @@ async function updateUser(id: string, user: Partial<User & Auth>): Promise<any |
     movilPhone: user.movilPhone
   };
 
-  if (user.email) updatedAuth = await authController.updateEmail(id, user.email);
+  updatedAuth = await authController.updateEmail(id, updateAuth);
   updatedUser = await repository.updateUser(id, updateUser);
 
   if (updatedUser && updatedAuth) {
