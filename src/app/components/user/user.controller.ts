@@ -2,6 +2,8 @@ import repository from "./user.repository";
 import { User } from '../../models/user.model';
 import { Auth } from "../../models/auth.model";
 import authController from "../auth/auth.controller";
+import { Address } from "../../models/address.model";
+import addressController from "../address/address.controller";
 
 function getUsers(): Promise<User[]>{
   return repository.getUsers();
@@ -64,9 +66,51 @@ async function updateUser(id: string, user: Partial<User & Auth>): Promise<any |
   return response;
 }
 
+async function getMyAddress(id:string): Promise<any[] | null> {
+  const user: User | null = await getUser(id);
+  let response: any[] | null = null;
+  if (user)
+    response = user.myAddress!;
+  return response;
+}
+
+async function addAddresOnUser(newAddress: Address, idUser: string): Promise<any[] | null> {
+  const address: Address | null = await addressController.addAddress(newAddress);
+  let user: User | null = null;
+  if (address) {
+    user = await getUser(idUser);
+    if (user){
+      user.myAddress!.push(address._id!);
+    }
+  }
+  return user?.myAddress!
+}
+
+async function removeAddressOnUser(user: User, idAddress: string): Promise<any| null>{
+  let response: any | null = null
+  for (let address of user.myAddress!){
+    if (address === idAddress){
+      user.myAddress! = user.myAddress!.filter((item)=> item !== idAddress);
+      response = address;
+    }
+  }
+  return response;
+}
+
+
+async function deleteAddressOnUser(idUser: string, idAddress: string): Promise<Address | null>{
+  const addressDeleted: Address | null = await addressController.deleteAddress(idAddress)
+  if(addressDeleted){
+    const user: User | null = await getUser(idUser);
+    if (user) await removeAddressOnUser(user, idAddress);
+  }
+  return addressDeleted;
+}
+
 async function deleteUser(id: string): Promise<User | null>{
   return repository.deleteUser(id);
 }
+
 /*
 async function getOnlyUser(id: string): Promise<User | null>{
   return repository.getUser(id);
@@ -108,5 +152,8 @@ export default {
   getUser,
   addUser,
   updateUser,
+  addAddresOnUser,
+  deleteAddressOnUser,
+  getMyAddress,
   deleteUser
 };

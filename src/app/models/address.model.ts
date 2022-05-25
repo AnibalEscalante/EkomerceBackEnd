@@ -1,7 +1,8 @@
 export interface Address{
-    region: string;
-    commune: string;
-    street: string;
-    number?: string;
-    dept?: string;
+  _id?: string;
+  region: string;
+  commune: string;
+  street: string;
+  number?: string;
+  dept?: string;
 }

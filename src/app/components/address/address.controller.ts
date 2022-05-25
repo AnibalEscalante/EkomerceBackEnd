@@ -9,7 +9,7 @@ function getAddress(id: string): Promise<Address | null>{
   return repository.getAddress(id);
 }
 
-function addAddress(address: Address): Promise<Address>{
+function addAddress(address: Address): Promise<Address | null>{
   return repository.addAddress(address);
 }
 
