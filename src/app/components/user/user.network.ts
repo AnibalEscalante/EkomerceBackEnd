@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from "express";
+import { Address } from "../../models/address.model";
 import { Auth } from "../../models/auth.model";
 import { User } from "../../models/user.model";
 import response from "../../modules/reponse.module";
@@ -36,6 +37,46 @@ router.patch('/:id', async (req: Request, res: Response) => {
 
   try {
     const result: any | null = await controller.updateUser(id, user);
+    response.success(req, res, result);
+  }
+  catch (error) {
+    console.error(error);
+    response.error(req, res, 'Invalid information', 500);
+  }
+});
+
+router.post('/:id/address', async (req: Request, res: Response) => {
+  const address: Address = req.body;
+  const id: string = req.params['id'];
+
+  try {
+    const result: any[] | null = await controller.addAddresOnUser(address, id);
+    response.success(req, res, result);
+  }
+  catch (error) {
+    console.error(error);
+    response.error(req, res, 'Invalid information', 500);
+  }
+});
+
+router.get('/:id/myAddress', async (req: Request, res: Response) => {
+  const id: string = req.params['id'];
+
+  try {
+    const result: any[] | null = await controller.getMyAddress(id);
+    response.success(req, res, result);
+  }
+  catch (error) {
+    console.error(error);
+    response.error(req, res, 'Invalid information', 500);
+  }
+});
+
+router.delete('/:id/address', async (req: Request, res: Response) => {
+  const id: string = req.params['id'];
+
+  try {
+    const result: User | null = await controller.deleteUser(id);
     response.success(req, res, result);
   }
   catch (error) {

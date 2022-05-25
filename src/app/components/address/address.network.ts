@@ -33,7 +33,7 @@ router.post('/', async (req: Request, res: Response) => {
   const address: Address = req.body;
   
   try {
-    const result: Address = await controller.addAddress(address);
+    const result: Address | null = await controller.addAddress(address);
     response.success(req, res, result, 201);
   }
   catch (error) {
