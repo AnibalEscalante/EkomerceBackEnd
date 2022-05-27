@@ -1,5 +1,5 @@
 export interface Category{
-    _id: string;
+    id: string;
     name: string;
     subCategories: string[];//tipo category
     updatedAt?: Date;

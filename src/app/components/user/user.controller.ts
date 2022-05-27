@@ -19,7 +19,7 @@ async function getUser(id: string): Promise<any | null>{
   let result: any | null = null;
   if (user && auth){
     result = {
-      _id: user._id,
+      _id: user.id,
       name: user.name,
       email: auth.email,
       lastNameP: user.lastNameP,
@@ -84,7 +84,7 @@ async function addAddresOnUser(newAddress: Address, idUser: string): Promise<any
   if (address) {
     user = await getUser(idUser);
     if (user){
-      user.myAddress!.push(address._id!);
+      user.myAddress!.push(address.id!);
     }
   }
   return user?.myAddress!
