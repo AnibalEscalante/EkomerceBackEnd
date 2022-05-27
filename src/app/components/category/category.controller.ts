@@ -25,7 +25,7 @@ async function deleteCategory(id: string): Promise<Category | null>{
 async function getCategoryName(id: string): Promise<any | null>{
   const category: Category | null = await repository.getCategory(id);
   const result = {
-    id: category?._id,
+    id: category?.id,
     name: category?.name
   };
   return result;
@@ -38,7 +38,7 @@ async function getCategoriesName(): Promise<Category[] | null>{
   let result: Category[] | null = [];
   for(let category of categories){
     const data: any = {
-      id: category._id,
+      id: category.id,
       name: category.name,
       subCategories: await subCategoryController.getSubCategoriesName(category.subCategories)
     }

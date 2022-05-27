@@ -28,7 +28,7 @@ async function getSubCategoriesName(idSubCategories: string[]): Promise<any[] | 
     const response: SubCategory | null = await repository.getSubCategory(idSubCategory);
     if(response){
       const data = {
-        id: response._id,
+        id: response.id,
         name: response.name
       };
       result.push(data)

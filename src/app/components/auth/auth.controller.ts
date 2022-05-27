@@ -14,17 +14,19 @@ async function userSignIn(auth: Auth & User): Promise<Auth>{
       newUser = await userController.addUser(newUser);
     }
 
-    if(newUser?._id && auth.password){
-      auth.authenticated = newUser?._id;
-      auth.password = await authModule.encrypt(auth.password);
-
-      let authentify: Auth = {
-        email: auth.email,
-        password: auth.password,
-        authenticated: auth.authenticated 
+    if (newUser){
+      if(newUser.id && auth.password){
+        auth.authenticated = newUser.id;
+        auth.password = await authModule.encrypt(auth.password);
+  
+        let authentify: Auth = {
+          email: auth.email,
+          password: auth.password,
+          authenticated: auth.authenticated 
+        }
+  
+        return repository.addAuth(authentify);
       }
-
-      return repository.addAuth(authentify);
     }
   }
   catch(error){
@@ -48,7 +50,7 @@ async function login(auth: Auth): Promise<string | null>{
         
         authFound.token = authModule.sign({ 
           email: email, 
-          authenticated: authenticated._id
+          authenticated: authenticated.id
         });
 
         console.log(authModule.verify(authFound.token))
