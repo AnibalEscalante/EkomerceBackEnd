@@ -4,6 +4,10 @@ import { Auth } from "../../models/auth.model";
 import authController from "../auth/auth.controller";
 import { Address } from "../../models/address.model";
 import addressController from "../address/address.controller";
+import { Shopping } from "../../models/shopping.model";
+import shoppingController from "../shopping/shopping.controller";
+import { Distribution } from "../../models/distribution.model";
+import distributionController from "../distribution/distribution.controller";
 
 function getUsers(): Promise<User[]>{
   return repository.getUsers();
@@ -23,7 +27,7 @@ async function getUser(id: string): Promise<any | null>{
       rut: user.rut,
       movilPhone: user.movilPhone,
       myMethodPayment: user.myMethodPayment,
-      myShopping: user.myShopping,
+      myShopping: user.myShoppings,
       myAddress: user.myAddress     
     };
     return result;
@@ -107,6 +111,29 @@ async function deleteAddressOnUser(idUser: string, idAddress: string): Promise<A
   return addressDeleted;
 }
 
+async function addShoppingOnUser(shopping: Shopping, distributions: Distribution[], idUser: string): Promise<any[] | null> {
+  const newShopping: Shopping | null = await shoppingController.addShopping(shopping);
+  let response: any[] | null = null;
+
+  if (newShopping){
+    for (let distribution of distributions){
+      const newDistribution: Distribution | null = await distributionController.addDistribution(distribution);
+      if (newDistribution){
+        newShopping.distributions.push(newDistribution.id);
+      } else return response;
+    }
+  } else return response;
+  
+  let user: User | null = await getUser(idUser);
+
+  if (user){
+    user.myShoppings?.push(newShopping.id);
+    response = user.myShoppings!;
+  } 
+  
+  return response;
+}
+
 async function deleteUser(id: string): Promise<User | null>{
   return repository.deleteUser(id);
 }
@@ -155,5 +182,6 @@ export default {
   addAddresOnUser,
   deleteAddressOnUser,
   getMyAddress,
+  addShoppingOnUser,
   deleteUser
 };

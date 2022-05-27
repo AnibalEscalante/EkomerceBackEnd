@@ -1,6 +1,8 @@
 import express, { Request, Response, Router } from "express";
 import { Address } from "../../models/address.model";
 import { Auth } from "../../models/auth.model";
+import { Distribution } from "../../models/distribution.model";
+import { Shopping } from "../../models/shopping.model";
 import { User } from "../../models/user.model";
 import response from "../../modules/reponse.module";
 import controller from "./user.controller";
@@ -77,6 +79,21 @@ router.delete('/:id/address', async (req: Request, res: Response) => {
 
   try {
     const result: User | null = await controller.deleteUser(id);
+    response.success(req, res, result);
+  }
+  catch (error) {
+    console.error(error);
+    response.error(req, res, 'Invalid information', 500);
+  }
+});
+
+router.post('/:id/shopping', async (req: Request, res: Response) => {
+  const shopping: Shopping = req.body.Shopping;
+  const distributions: Distribution[] = req.body.distributions;
+  const id: string = req.params['id'];
+
+  try {
+    const result: any[] | null = await controller.addShoppingOnUser(shopping, distributions, id);
     response.success(req, res, result);
   }
   catch (error) {

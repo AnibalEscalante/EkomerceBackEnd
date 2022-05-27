@@ -6,7 +6,7 @@ export interface User {
   rut: string;
   movilPhone?: string;
   myMethodPayment?: string[]
-  myShopping?: string[];
+  myShoppings?: string[];
   myAddress?: string[];
   updateAt?: Date;
   createdAt?: Date;

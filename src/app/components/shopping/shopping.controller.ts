@@ -1,24 +1,24 @@
 import { Shopping } from "../../models/shopping.model";
 import repository from "./shopping.repository";
 
-function getShoppings(): Promise<Shopping[]>{
-  return repository.getShoppings();
+async function getShoppings(): Promise<Shopping[]>{
+  return await repository.getShoppings();
 }
 
-function getShopping(id: string): Promise<Shopping | null>{
-  return repository.getShopping(id);
+async function getShopping(id: string): Promise<Shopping | null>{
+  return await repository.getShopping(id);
 }
 
-function addShopping(shopping: Shopping): Promise<Shopping>{
-  return repository.addShopping(shopping);
+async function addShopping(shopping: Shopping): Promise<Shopping>{
+  return await repository.addShopping(shopping);
 }
 
-function updateShopping(id: string, shopping: Partial<Shopping>): Promise<Shopping | null>{
-  return repository.updateShopping(id, shopping);
+async function updateShopping(id: string, shopping: Partial<Shopping>): Promise<Shopping | null>{
+  return await repository.updateShopping(id, shopping);
 }
 
 async function deleteShopping(id: string): Promise<Shopping | null>{
-  return repository.deleteShopping(id);
+  return await repository.deleteShopping(id);
 }
 
 export default {
