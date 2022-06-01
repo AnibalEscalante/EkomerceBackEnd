@@ -1,24 +1,24 @@
 import { SubCategory } from "../../models/subCategory.model";
 import repository from "./subCategory.repository";
 
-function getSubCategories(): Promise<SubCategory[]>{
-  return repository.getSubCategories();
+async function getSubCategories(): Promise<SubCategory[]>{
+  return await repository.getSubCategories();
 }
 
-function getSubCategory(id: string): Promise<SubCategory | null>{
-  return repository.getSubCategory(id);
+async function getSubCategory(id: string): Promise<SubCategory | null>{
+  return await repository.getSubCategory(id);
 }
 
-function addSubCategory(subCategory: SubCategory): Promise<SubCategory>{
-  return repository.addSubCategory(subCategory);
+async function addSubCategory(subCategory: SubCategory): Promise<SubCategory>{
+  return await repository.addSubCategory(subCategory);
 }
 
-function updateSubCategory(id: string, subCategory: Partial<SubCategory>): Promise<SubCategory | null>{
-  return repository.updateSubCategory(id, subCategory);
+async function updateSubCategory(id: string, subCategory: Partial<SubCategory>): Promise<SubCategory | null>{
+  return await repository.updateSubCategory(id, subCategory);
 }
 
 async function deleteSubCategory(id: string): Promise<SubCategory | null>{
-  return repository.deleteSubCategory(id);
+  return await repository.deleteSubCategory(id);
 }
 
 

@@ -6,8 +6,12 @@ const definition: Partial<Record<keyof User, any>> = {
   name: { type: String, required: true, trim: true },
   lastNameM: { type: String, required: true, trim: true },
   lastNameP: { type: String, required: true, trim: true },
+  rut: { type: String, required: true, trim: true },
   movilPhone: { type: String, trim: true },
-  rut: { type: String, required: true, trim: true }
+  // add myMethodPayment component
+  myShoppings: [{ type: Schema.Types.ObjectId, ref: 'Shopping', trim: true, autopopulate: true }],
+  myAddress: [{ type: Schema.Types.ObjectId, ref: 'Address', trim: true, autopopulate: true }],
+  myBasket: [{ type: Schema.Types.ObjectId, ref: 'Product', trim: true, autopopulate: true }]
 
 };
 

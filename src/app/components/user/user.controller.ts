@@ -9,8 +9,8 @@ import shoppingController from "../shopping/shopping.controller";
 import { Distribution } from "../../models/distribution.model";
 import distributionController from "../distribution/distribution.controller";
 
-function getUsers(): Promise<User[]>{
-  return repository.getUsers();
+async function getUsers(): Promise<User[]>{
+  return await repository.getUsers();
 }
 
 async function getUser(id: string): Promise<any | null>{
@@ -35,7 +35,7 @@ async function getUser(id: string): Promise<any | null>{
 }
 
 async function addUser(newUser: User): Promise<User | null> {
-    return repository.addUser(newUser);
+    return await repository.addUser(newUser);
 }
 
 async function updateUser(id: string, user: Partial<User & Auth>): Promise<any | null> {
@@ -135,7 +135,7 @@ async function addShoppingOnUser(shopping: Shopping, distributions: Distribution
 }
 
 async function deleteUser(id: string): Promise<User | null>{
-  return repository.deleteUser(id);
+  return await repository.deleteUser(id);
 }
 
 /*
