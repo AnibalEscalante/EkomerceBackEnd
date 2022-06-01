@@ -8,6 +8,7 @@ export interface User {
   myMethodPayment?: string[]
   myShoppings?: string[];
   myAddress?: string[];
+  myBasket?: string[];
   updateAt?: Date;
   createdAt?: Date;
 }

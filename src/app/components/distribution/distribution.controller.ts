@@ -1,24 +1,24 @@
 import { Distribution } from "../../models/distribution.model";
 import repository from "./distribution.repository";
 
-function getDistributions(): Promise<Distribution[]>{
-  return repository.getDistributions();
+async function getDistributions(): Promise<Distribution[]>{
+  return await repository.getDistributions();
 }
 
-function getDistribution(id: string): Promise<Distribution | null>{
-  return repository.getDistribution(id);
+async function getDistribution(id: string): Promise<Distribution | null>{
+  return await repository.getDistribution(id);
 }
 
-function addDistribution(distribution: Distribution): Promise<Distribution>{
-  return repository.addDistribution(distribution);
+async function addDistribution(distribution: Distribution): Promise<Distribution>{
+  return await repository.addDistribution(distribution);
 }
 
-function updateDistribution(id: string, distribution: Partial<Distribution>): Promise<Distribution | null>{
-  return repository.updateDistribution(id, distribution);
+async function updateDistribution(id: string, distribution: Partial<Distribution>): Promise<Distribution | null>{
+  return await repository.updateDistribution(id, distribution);
 }
 
 async function deleteDistribution(id: string): Promise<Distribution | null>{
-  return repository.deleteDistribution(id);
+  return await repository.deleteDistribution(id);
 }
 
 

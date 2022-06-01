@@ -8,4 +8,5 @@ const definition: Partial<Record<keyof Shopping, any>> = {
 
 const schema: Schema<Shopping> = new Schema(definition, { timestamps: true });
 schema.plugin(require('mongoose-autopopulate'));
+
 export default model<Shopping & Document>('Shopping', schema, 'shopping');

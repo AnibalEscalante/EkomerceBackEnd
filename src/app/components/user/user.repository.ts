@@ -2,23 +2,23 @@ import { User } from '../../models/user.model';
 import model from './user.schema';
 
 async function getUsers(): Promise<User[]>{
-  return model.find();
+  return await model.find();
 }
 
 async function getUser(id: string): Promise<User | null>{
-  return model.findOne({ _id: id });
+  return await model.findOne({ _id: id });
 }
 
 async function addUser(user: User): Promise<User>{
-  return model.create<User>(user);
+  return await model.create<User>(user);
 }
 
 async function updateUser(id: string, user: Partial<User>): Promise<User | null>{
-  return model.findOneAndUpdate({ _id: id }, user);
+  return await model.findOneAndUpdate({ _id: id }, user);
 }
 
 async function deleteUser(id: string): Promise<User | null>{
-  return model.findOneAndRemove({_id: id});
+  return await model.findOneAndRemove({_id: id});
 }
 
 /*

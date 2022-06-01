@@ -1,24 +1,24 @@
 import { Product } from "../../models/product.model";
 import repository from "./product.repository";
 
-function getProducts(): Promise<Product[]>{
-  return repository.getProducts();
+async function getProducts(): Promise<Product[]>{
+  return await repository.getProducts();
 }
 
-function getProduct(id: string): Promise<Product | null>{
-  return repository.getProduct(id);
+async function getProduct(id: string): Promise<Product | null>{
+  return await repository.getProduct(id);
 }
 
-function addProduct(product: Product): Promise<Product>{
-  return repository.addProduct(product);
+async function addProduct(product: Product): Promise<Product>{
+  return await repository.addProduct(product);
 }
 
-function updateProduct(id: string, product: Partial<Product>): Promise<Product | null>{
-  return repository.updateProduct(id, product);
+async function updateProduct(id: string, product: Partial<Product>): Promise<Product | null>{
+  return await repository.updateProduct(id, product);
 }
 
 async function deleteProduct(id: string): Promise<Product | null>{
-  return repository.deleteProduct(id);
+  return await repository.deleteProduct(id);
 }
 
 
