@@ -19,7 +19,7 @@ async function getUser(id: string): Promise<any | null>{
   let result: any | null = null;
   if (user && auth){
     result = {
-      _id: user.id,
+      id: user.id,
       name: user.name,
       email: auth.email,
       lastNameP: user.lastNameP,
@@ -119,7 +119,7 @@ async function addShoppingOnUser(shopping: Shopping, distributions: Distribution
     for (let distribution of distributions){
       const newDistribution: Distribution | null = await distributionController.addDistribution(distribution);
       if (newDistribution){
-        newShopping.distributions.push(newDistribution.id);
+        newShopping.distributions.push(newDistribution.id!);
       } else return response;
     }
   } else return response;
@@ -127,7 +127,7 @@ async function addShoppingOnUser(shopping: Shopping, distributions: Distribution
   let user: User | null = await getUser(idUser);
 
   if (user){
-    user.myShoppings?.push(newShopping.id);
+    user.myShoppings?.push(newShopping.id!);
     response = user.myShoppings!;
   } 
   

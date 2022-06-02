@@ -2,20 +2,20 @@ import { Category } from "../../models/category.model";
 import subCategoryController from "../subCategory/subCategory.controller";
 import repository from "./category.repository";
 
-function getCategories(): Promise<Category[]>{
-  return repository.getCategories();
+async function getCategories(): Promise<Category[]>{
+  return await repository.getCategories();
 }
 
-function getCategory(id: string): Promise<Category | null>{
-  return repository.getCategory(id);
+async function getCategory(id: string): Promise<Category | null>{
+  return await repository.getCategory(id);
 }
 
-function addCategory(category: Category): Promise<Category>{
+async function addCategory(category: Category): Promise<Category>{
   return repository.addCategory(category);
 }
 
-function updateCategory(id: string, category: Partial<Category>): Promise<Category | null>{
-  return repository.updateCategory(id, category);
+async function updateCategory(id: string, category: Partial<Category>): Promise<Category | null>{
+  return await repository.updateCategory(id, category);
 }
 
 async function deleteCategory(id: string): Promise<Category | null>{
