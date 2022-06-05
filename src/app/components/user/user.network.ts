@@ -140,7 +140,7 @@ router.get('/:id/myShoppins', async (req: Request, res: Response) => {
 
 ///////////////////////////////////////////// Basket on User /////////////////////////////////////////////
 
-router.post('/:id/basket', async (req: Request, res: Response) => {
+router.post('/:id/Distribution', async (req: Request, res: Response) => {
   const distribution: Distribution = req.body;
   const id: string = req.params['id'];
 
@@ -167,7 +167,7 @@ router.get('/:id/myBasket', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/:id/basket', async (req: Request, res: Response) => {
+router.delete('/:id/Distribution', async (req: Request, res: Response) => {
   const idUser: string = req.params['id'];
   const idDistribution: string = req.body;
 
