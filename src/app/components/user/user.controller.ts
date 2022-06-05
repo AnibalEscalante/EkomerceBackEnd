@@ -8,6 +8,8 @@ import authController from "../auth/auth.controller";
 import addressController from "../address/address.controller";
 import shoppingController from "../shopping/shopping.controller";
 import distributionController from "../distribution/distribution.controller";
+import { MethodPayment } from "../../models/methodPayment.model";
+import methodPaymentController from "../methodPayment/methodPayment.controller";
 
 async function getUsers(): Promise<User[]>{
   return await repository.getUsers();
@@ -175,8 +177,8 @@ async function addDistributionOnMyBasket(distribution: Distribution, idUser: str
   if (newDistribution){
     user = await getUser(idUser);
     if (user) {
-      user.myBasket!.push(newDistribution.id!)
-      response = user.myBasket!
+      user.myBasket!.push(newDistribution.id!);
+      response = user.myBasket!;
     }
   }
   
@@ -207,6 +209,56 @@ async function deleteDistributionOnMyBasket(idUser: string, idDistribution: stri
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////// MethodPayment on User /////////////////////////////////////////
+
+async function getMyMethodPayment(id: string): Promise<any[] | null> {
+  const user: User | null = await getUser(id);
+  let response: any[] | null = null;
+  if (user){
+    response = user.myMethodPayment!
+  }
+  return response;
+}
+
+async function addMethodPaymentOnUser(methodPayment: MethodPayment, idUser: string): Promise<any[] | null> {
+  const newMethodPayment: MethodPayment | null = await methodPaymentController.addMethodPayment(methodPayment);
+  let user: User | null = null;
+  let response: any[] | null = null;
+
+  if (newMethodPayment){
+    user = await getUser(idUser);
+    if (user){
+      user.myMethodPayment!.push(newMethodPayment.id!);
+      response = user.myMethodPayment!;
+    }
+  }
+  return response;
+}
+
+async function removeMethodPaymentOnUser(user: User, idMethodPayment: string): Promise<any| null>{
+  let response: any | null = null
+  if (user.myMethodPayment){
+    for (let methodPayment of user.myMethodPayment){
+      if (methodPayment === idMethodPayment){
+        user.myMethodPayment = user.myMethodPayment.filter((item)=> item !== idMethodPayment);
+        response = methodPayment;
+      }
+    }
+  }
+  return response;
+}
+
+async function deleteMethodPaymentOnUser(idUser: string, idMethodPayment: string): Promise<MethodPayment | null>{
+  const methodPaymentDeleted: MethodPayment | null = await methodPaymentController.deleteMethodPayment(idMethodPayment);
+  if(methodPaymentDeleted){
+    const user: User | null = await getUser(idUser);
+    if (user) await removeAddressOnUser(user, idMethodPayment);
+  }
+  return methodPaymentDeleted;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 export default {
   getUsers,
   getUser,
@@ -221,5 +273,9 @@ export default {
   getMyBasket,
   addDistributionOnMyBasket,
   removeDistributionOnMyBasket,
-  deleteDistributionOnMyBasket
+  deleteDistributionOnMyBasket,
+  getMyMethodPayment,
+  addMethodPaymentOnUser,
+  removeMethodPaymentOnUser,
+  deleteMethodPaymentOnUser
 };
