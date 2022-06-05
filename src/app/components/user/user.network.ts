@@ -2,6 +2,7 @@ import express, { Request, Response, Router } from "express";
 import { Address } from "../../models/address.model";
 import { Auth } from "../../models/auth.model";
 import { Distribution } from "../../models/distribution.model";
+import { MethodPayment } from "../../models/methodPayment.model";
 import { Shopping } from "../../models/shopping.model";
 import { User } from "../../models/user.model";
 import response from "../../modules/reponse.module";
@@ -181,5 +182,50 @@ router.delete('/:id/basket', async (req: Request, res: Response) => {
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////// MethodPayment on User /////////////////////////////////////////
+
+router.post('/:id/methodPayment', async (req: Request, res: Response) => {
+  const methodPayment: MethodPayment = req.body;
+  const id: string = req.params['id'];
+
+  try {
+    const result: any[] | null = await controller.addMethodPaymentOnUser(methodPayment, id);
+    response.success(req, res, result);
+  }
+  catch (error) {
+    console.error(error);
+    response.error(req, res, 'Invalid information', 500);
+  }
+});
+
+router.get('/:id/myMethodPayment', async (req: Request, res: Response) => {
+  const id: string = req.params['id'];
+
+  try {
+    const result: any[] | null = await controller.getMyMethodPayment(id);
+    response.success(req, res, result);
+  }
+  catch (error) {
+    console.error(error);
+    response.error(req, res, 'Invalid information', 500);
+  }
+});
+
+router.delete('/:id/methodPayment', async (req: Request, res: Response) => {
+  const idUser: string = req.params['id'];
+  const idMethodPayment: string = req.body;
+
+  try {
+    const result: MethodPayment | null = await controller.deleteMethodPaymentOnUser(idUser, idMethodPayment);
+    response.success(req, res, result);
+  }
+  catch (error) {
+    console.error(error);
+    response.error(req, res, 'Invalid information', 500);
+  }
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export default router;
