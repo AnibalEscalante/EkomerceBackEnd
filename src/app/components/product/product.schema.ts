@@ -8,7 +8,7 @@ const definition: Partial<Record<keyof Product, any>> = {
     description: { type: String, required: true, trim: true },
     price: { type: Number, required: true },
     image: { type: String, required: false, trim: true },
-    discount: { type: String, required: false, trim: true },
+    discount: { type: Number, required: true},
     features: [{ type: Schema.Types.ObjectId, ref: 'Feature', required: true, autopopulate: true }],
 
 };
