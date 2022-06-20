@@ -28,7 +28,7 @@ async function getAllProductCategoryName(name: string): Promise<any | null>{
   if(category){
     if(category.name === name){
       const result = {
-        subCategories: await subCategoryController.getSubCategory(category._id)
+        subCategories: await subCategoryController.getSubCategory(category.name)
       };
       return result;
     }else{
