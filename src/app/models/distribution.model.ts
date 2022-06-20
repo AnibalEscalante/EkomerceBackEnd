@@ -1,6 +1,8 @@
 export interface Distribution{
-  id: string;
+  id?: string;
   type: string;
+  cost: number;
+  amount: number;
   product: string;
   address: string;
   updatedAt?: Date;

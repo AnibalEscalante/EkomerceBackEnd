@@ -2,23 +2,23 @@ import { Shopping } from '../../models/shopping.model';
 import model from './shopping.schema';
 
 async function getShoppings(): Promise<Shopping[]>{
-  return model.find();
+  return await model.find();
 }
 
 async function getShopping(id: string): Promise<Shopping | null>{
-  return model.findOne({ _id: id });
+  return await model.findOne({ _id: id });
 }
 
 async function addShopping(shopping: Shopping): Promise<Shopping>{
-  return model.create<Shopping>(shopping);
+  return await model.create<Shopping>(shopping);
 }
 
 async function updateShopping(id: string, shopping: Partial<Shopping>): Promise<Shopping | null>{
-  return model.findOneAndUpdate({ _id: id }, shopping);
+  return await model.findOneAndUpdate({ _id: id }, shopping);
 }
 
 async function deleteShopping(id: string): Promise<Shopping | null>{
-  return model.findOneAndRemove({_id: id});
+  return await model.findOneAndRemove({_id: id});
 }
 
 

@@ -1,7 +1,7 @@
 export interface SubCategory{
-    _id: string;
-    name: string;
-    products: String[]; //Tipo product
-    updatedAt?: Date;
-    createdAt?: Date;
+  id?: string;
+  name: string;
+  products: string[];
+  updatedAt?: Date;
+  createdAt?: Date;
 }

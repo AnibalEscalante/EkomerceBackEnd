@@ -1,13 +1,13 @@
 import express, { Request, Response, Router } from "express";
-import { Address } from "../../models/address.model";
+import { MethodPayment } from "../../models/methodPayment.model";
 import response from "../../modules/reponse.module";
-import controller from "./address.controller";
+import controller from "./methodPayment.controller";
 
 const router: Router = express.Router();
 
 router.get('/all', async (req: Request, res: Response) => {
   try {
-    const result: Address[] = await controller.getAddresses();
+    const result: MethodPayment[] = await controller.getMethodsPayment();
     response.success(req, res, result);
   }
   catch (error) {
@@ -20,7 +20,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   const id: string = req.params['id'];
 
   try {
-    const result: Address | null = await controller.getAddress(id);
+    const result: MethodPayment | null = await controller.getMethodPayment(id);
     response.success(req, res, result);
   }
   catch (error) {
@@ -30,10 +30,10 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 router.post('/', async (req: Request, res: Response) => {
-  const address: Address = req.body;
+  const methodPayment: MethodPayment = req.body;
   
   try {
-    const result: Address | null = await controller.addAddress(address);
+    const result: MethodPayment = await controller.addMethodPayment(methodPayment);
     response.success(req, res, result, 201);
   }
   catch (error) {
@@ -43,11 +43,11 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 router.patch('/:id', async (req: Request, res: Response) => {
-  const address: Partial<Address> = req.body;
+  const methodPayment: Partial<MethodPayment> = req.body;
   const id: string = req.params['id'];
 
   try {
-    const result: Address | null = await controller.updateAddress(id, address);
+    const result: MethodPayment | null = await controller.updateMethodPayment(id, methodPayment);
     response.success(req, res, result, 200);
   }
   catch (error) {
@@ -60,7 +60,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
   const id: string = req.params['id'];
 
   try {
-    const result: Address | null = await controller.deleteAddress(id);
+    const result: MethodPayment | null = await controller.deleteMethodPayment(id);
     response.success(req, res, result, 200);
   }
   catch (error) {

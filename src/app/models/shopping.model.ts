@@ -1,7 +1,7 @@
 export interface Shopping{
-  id: string;
-  amount: number;
-  distributions: String[];
+  id?: string;
+  total: number;
+  distributions: string[];
   updatedAt?: Date;
   createdAt?: Date;
 }

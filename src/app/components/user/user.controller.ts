@@ -1,10 +1,18 @@
 import repository from "./user.repository";
 import { User } from '../../models/user.model';
 import { Auth } from "../../models/auth.model";
+import { Address } from "../../models/address.model";
+import { Shopping } from "../../models/shopping.model";
+import { Distribution } from "../../models/distribution.model";
 import authController from "../auth/auth.controller";
+import addressController from "../address/address.controller";
+import shoppingController from "../shopping/shopping.controller";
+import distributionController from "../distribution/distribution.controller";
+import { MethodPayment } from "../../models/methodPayment.model";
+import methodPaymentController from "../methodPayment/methodPayment.controller";
 
-function getUsers(): Promise<User[]>{
-  return repository.getUsers();
+async function getUsers(): Promise<User[]>{
+  return await repository.getUsers();
 }
 
 async function getUser(id: string): Promise<any | null>{
@@ -13,7 +21,7 @@ async function getUser(id: string): Promise<any | null>{
   let result: any | null = null;
   if (user && auth){
     result = {
-      _id: user._id,
+      id: user.id,
       name: user.name,
       email: auth.email,
       lastNameP: user.lastNameP,
@@ -21,7 +29,7 @@ async function getUser(id: string): Promise<any | null>{
       rut: user.rut,
       movilPhone: user.movilPhone,
       myMethodPayment: user.myMethodPayment,
-      myShopping: user.myShopping,
+      myShopping: user.myShoppings,
       myAddress: user.myAddress     
     };
     return result;
@@ -29,7 +37,7 @@ async function getUser(id: string): Promise<any | null>{
 }
 
 async function addUser(newUser: User): Promise<User | null> {
-    return repository.addUser(newUser);
+    return await repository.addUser(newUser);
 }
 
 async function updateUser(id: string, user: Partial<User & Auth>): Promise<any | null> {
@@ -65,48 +73,209 @@ async function updateUser(id: string, user: Partial<User & Auth>): Promise<any |
 }
 
 async function deleteUser(id: string): Promise<User | null>{
-  return repository.deleteUser(id);
-}
-/*
-async function getOnlyUser(id: string): Promise<User | null>{
-  return repository.getUser(id);
+  return await repository.deleteUser(id);
 }
 
-async function removeRequestC(idUserSender: string, idRequest: string): Promise<User | null>{
-  let user = await repository.removeRequest(idUserSender,idRequest);
-  return user
-}
-async function removeRequestCReply(idUserSender: string, idRequestReply: string): Promise<User | null>{
-  let user = await repository.removeRequestReply(idUserSender,idRequestReply);
-  return user
+///////////////////////////////////////////// Address on User /////////////////////////////////////////////
+
+async function getMyAddress(id:string): Promise<any[] | null> {
+  const user: User | null = await getUser(id);
+  let response: any[] | null = null;
+  if (user)
+    response = user.myAddress!;
+  return response;
 }
 
-async function removeSavedProject(idUser: string, idProject: string) {
-  return repository.removeSavedProject(idUser, idProject);
-}
-
-async function removeCollaboratingProject(idUser: string, idProject: string) {
-  return repository.removeCollaboratingProject(idUser, idProject);
-}
-
-async function removeContactInUsers(id: string) {
-  const users = await repository.getUsers();
-  for (let user of users) {
-    await repository.removeContact(user._id!, id);
+async function addAddresOnUser(newAddress: Address, idUser: string): Promise<any[] | null> {
+  const address: Address | null = await addressController.addAddress(newAddress);
+  let user: User | null = null;
+  let response: any[] | null = null;
+  if (address) {
+    user = await getUser(idUser);
+    if (user){
+      user.myAddress!.push(address.id!);
+      response = user.myAddress!
+    }
   }
-  return;
+  return response
 }
 
-async function removeContactInUser(idUser: string, idContact: string) {
-  await repository.removeContact(idUser, idContact);
-  return;
+async function removeAddressOnUser(user: User, idAddress: string): Promise<any| null>{
+  let response: any | null = null
+  if (user.myAddress){
+    for (let address of user.myAddress!){
+      if (address === idAddress){
+        user.myAddress! = user.myAddress!.filter((item)=> item !== idAddress);
+        response = address;
+      }
+    }
+  }
+  return response;
 }
-*/
+
+async function deleteAddressOnUser(idUser: string, idAddress: string): Promise<Address | null>{
+  const addressDeleted: Address | null = await addressController.deleteAddress(idAddress)
+  if(addressDeleted){
+    const user: User | null = await getUser(idUser);
+    if (user) await removeAddressOnUser(user, idAddress);
+  }
+  return addressDeleted;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////// Shopping on User ////////////////////////////////////////////
+
+async function getMyShoppings(id:string): Promise<any[] | null> {
+  const user: User | null = await getUser(id);
+  let response: any[] | null = null;
+  if (user)
+    response = user.myShoppings!;
+  return response;
+}
+
+async function addShoppingOnUser(shopping: Shopping, distributions: Distribution[], idUser: string): Promise<any[] | null> {
+  const newShopping: Shopping | null = await shoppingController.addShopping(shopping);
+  let response: any[] | null = null;
+
+  if (newShopping){
+    for (let distribution of distributions){
+      const newDistribution: Distribution | null = await distributionController.addDistribution(distribution);
+      if (newDistribution){
+        newShopping.distributions.push(newDistribution.id!);
+      } else return response;
+    }
+  } else return response;
+  
+  let user: User | null = await getUser(idUser);
+
+  if (user){
+    user.myShoppings?.push(newShopping.id!);
+    response = user.myShoppings!;
+  } 
+  
+  return response;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////// Basket on User /////////////////////////////////////////////
+
+async function getMyBasket(id:string): Promise<any[] | null> {
+  const user: User | null = await getUser(id);
+  let response: any[] | null = null;
+  if (user)
+    response = user.myBasket!;
+  return response;
+}
+
+async function addDistributionOnMyBasket(distribution: Distribution, idUser: string): Promise<any[] | null> {
+  const newDistribution: Distribution | null = await distributionController.addDistribution(distribution);
+  let user: User | null = null;
+  let response: any[] | null = null;
+
+  if (newDistribution){
+    user = await getUser(idUser);
+    if (user) {
+      user.myBasket!.push(newDistribution.id!);
+      response = user.myBasket!;
+    }
+  }
+  
+  return response;
+}
+
+async function removeDistributionOnMyBasket(user: User, idDistribution: string): Promise<any| null>{
+  let response: any | null = null
+  if (user.myBasket){
+    for (let distribution of user.myBasket){
+      if (distribution === idDistribution){
+        user.myBasket = user.myBasket.filter((item)=> item !== idDistribution);
+        response = distribution;
+      }
+    }
+  }
+  return response;
+}
+
+async function deleteDistributionOnMyBasket(idUser: string, idDistribution: string): Promise<Distribution | null>{
+  const distributionDeleted: Distribution | null = await distributionController.deleteDistribution(idDistribution);
+  if(distributionDeleted){
+    const user: User | null = await getUser(idUser);
+    if (user) await removeAddressOnUser(user, idDistribution);
+  }
+  return distributionDeleted;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////// MethodPayment on User /////////////////////////////////////////
+
+async function getMyMethodPayment(id: string): Promise<any[] | null> {
+  const user: User | null = await getUser(id);
+  let response: any[] | null = null;
+  if (user){
+    response = user.myMethodPayment!
+  }
+  return response;
+}
+
+async function addMethodPaymentOnUser(methodPayment: MethodPayment, idUser: string): Promise<any[] | null> {
+  const newMethodPayment: MethodPayment | null = await methodPaymentController.addMethodPayment(methodPayment);
+  let user: User | null = null;
+  let response: any[] | null = null;
+
+  if (newMethodPayment){
+    user = await getUser(idUser);
+    if (user){
+      user.myMethodPayment!.push(newMethodPayment.id!);
+      response = user.myMethodPayment!;
+    }
+  }
+  return response;
+}
+
+async function removeMethodPaymentOnUser(user: User, idMethodPayment: string): Promise<any| null>{
+  let response: any | null = null
+  if (user.myMethodPayment){
+    for (let methodPayment of user.myMethodPayment){
+      if (methodPayment === idMethodPayment){
+        user.myMethodPayment = user.myMethodPayment.filter((item)=> item !== idMethodPayment);
+        response = methodPayment;
+      }
+    }
+  }
+  return response;
+}
+
+async function deleteMethodPaymentOnUser(idUser: string, idMethodPayment: string): Promise<MethodPayment | null>{
+  const methodPaymentDeleted: MethodPayment | null = await methodPaymentController.deleteMethodPayment(idMethodPayment);
+  if(methodPaymentDeleted){
+    const user: User | null = await getUser(idUser);
+    if (user) await removeAddressOnUser(user, idMethodPayment);
+  }
+  return methodPaymentDeleted;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export default {
   getUsers,
   getUser,
   addUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getMyAddress,
+  addAddresOnUser,
+  deleteAddressOnUser,
+  getMyShoppings,
+  addShoppingOnUser,
+  getMyBasket,
+  addDistributionOnMyBasket,
+  removeDistributionOnMyBasket,
+  deleteDistributionOnMyBasket,
+  getMyMethodPayment,
+  addMethodPaymentOnUser,
+  removeMethodPaymentOnUser,
+  deleteMethodPaymentOnUser
 };

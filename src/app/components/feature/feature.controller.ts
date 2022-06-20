@@ -1,24 +1,24 @@
 import { Feature } from "../../models/feature.model";
 import repository from "./feature.repository";
 
-function getFeatures(): Promise<Feature[]>{
-  return repository.getFeatures();
+async function getFeatures(): Promise<Feature[]>{
+  return await repository.getFeatures();
 }
 
-function getFeature(id: string): Promise<Feature | null>{
-  return repository.getFeature(id);
+async function getFeature(id: string): Promise<Feature | null>{
+  return await repository.getFeature(id);
 }
 
-function addFeature(feature: Feature): Promise<Feature>{
-  return repository.addFeature(feature);
+async function addFeature(feature: Feature): Promise<Feature>{
+  return await repository.addFeature(feature);
 }
 
-function updateFeature(id: string, feature: Partial<Feature>): Promise<Feature | null>{
-  return repository.updateFeature(id, feature);
+async function updateFeature(id: string, feature: Partial<Feature>): Promise<Feature | null>{
+  return await repository.updateFeature(id, feature);
 }
 
 async function deleteFeature(id: string): Promise<Feature | null>{
-  return repository.deleteFeature(id);
+  return await repository.deleteFeature(id);
 }
 
 
