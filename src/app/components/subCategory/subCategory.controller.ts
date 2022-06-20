@@ -20,7 +20,19 @@ function updateSubCategory(id: string, subCategory: Partial<SubCategory>): Promi
 async function deleteSubCategory(id: string): Promise<SubCategory | null>{
   return repository.deleteSubCategory(id);
 }
-
+/* async function getSubCategoriesProductsName(name:string): Promise<any[] | null>{
+  let result: any[] | null = [];
+  const response: SubCategory | null = await repository.getSubCategory(name);
+  if (response){
+    for
+    const data = {
+      id: response._id,
+      name: response.name
+    };
+    result.push(data)
+  }
+  return;
+} */
 
 async function getSubCategoriesName(idSubCategories: string[]): Promise<any[] | null>{
   let result: any[] | null = [];
@@ -42,5 +54,6 @@ export default {
   getSubCategory,
   updateSubCategory,
   deleteSubCategory,
-  getSubCategoriesName
+  getSubCategoriesName,/* 
+  getSubCategoriesProductsName */
 };
