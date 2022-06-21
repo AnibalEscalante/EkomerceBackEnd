@@ -82,7 +82,7 @@ router.get('/name/:id', async (req: Request, res: Response) => {
 router.get('/:name', async (req: Request, res: Response) => {
   const name: string = req.params['name'];
   try {
-    const result: any | null = await controller.getAllProductCategoryName(name);
+    const result: Category[] | null = await controller.getAllProductCategoryName(name);
     response.success(req, res, result);
   }
   catch (error) {
