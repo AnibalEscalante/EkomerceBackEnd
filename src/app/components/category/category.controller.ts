@@ -22,6 +22,31 @@ async function deleteCategory(id: string): Promise<Category | null>{
   return repository.deleteCategory(id);
 }
 
+
+async function getAllProductCategoryName(name: string): Promise<Category[] | null>{
+  const categories: Category[] | null = await repository.getCategories();
+  let result: Category[] | null = [];
+  if(categories){
+    for(let category of categories){
+      if(category.name === name){
+        const data:any = {
+          id: category.id,
+          name: category.name,
+          subCategories: await subCategoryController.getSubCategories()
+        };
+        result.push(data)
+      }else{
+        const data:any = {
+          subCategories: await subCategoryController.getSubCategoryName(category.name)
+        }
+        result.push(data)
+      }
+    }
+  }
+  return result;
+}
+
+
 async function getCategoryName(id: string): Promise<any | null>{
   const category: Category | null = await repository.getCategory(id);
   const result = {
@@ -56,5 +81,6 @@ export default {
   updateCategory,
   deleteCategory,
   getCategoryName,
-  getCategoriesName
+  getCategoriesName,
+  getAllProductCategoryName
 };
