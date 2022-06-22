@@ -5,6 +5,10 @@ async function getProducts(): Promise<Product[]>{
   return await repository.getProducts();
 }
 
+async function getSubCatProducts(): Promise<Product[]>{
+  return await repository.getProducts();
+}
+
 async function getProduct(id: string): Promise<Product | null>{
   return await repository.getProduct(id);
 }
@@ -21,6 +25,31 @@ async function deleteProduct(id: string): Promise<Product | null>{
   return await repository.deleteProduct(id);
 }
 
+async function getProductName(name:string): Promise<any[] | null>{
+  let result: any[] | null = [];
+  const products: Product[] | null = await repository.getProducts();
+  if (products){
+    for(let product of products){
+      if(product.brand === name){
+        const data:any = {
+          id: product.id,
+          brand: product.brand,
+          products: await repository.getProduct(product.id!)
+        };
+        result.push(data)
+      }
+      if(product.description === name){
+        const data:any = {
+          id: product.id,
+          brand: product.brand,
+          products: await repository.getProduct(product.id!)
+        };
+        result.push(data) 
+      }
+    }
+  }
+  return result;
+}
 
 
 export default {
@@ -28,5 +57,7 @@ export default {
   getProducts,
   getProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getSubCatProducts,
+  getProductName
 };
