@@ -30,6 +30,19 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/:id/allProducts', async (req: Request, res: Response) => {
+  const id: string = req.params['id'];
+
+  try {
+    const result: SubCategory | null = await controller.getSubCatProductName(id);
+    response.success(req, res, result);
+  }
+  catch (error) {
+    console.error(error);
+    response.error(req, res, 'Invalid information', 500);
+  }
+});
+
 router.post('/', async (req: Request, res: Response) => {
   const SubCategory: SubCategory = req.body;
   

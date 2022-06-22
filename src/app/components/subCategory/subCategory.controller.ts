@@ -1,4 +1,6 @@
 import { SubCategory } from "../../models/subCategory.model";
+import categoryController from "../category/category.controller";
+import productController from "../product/product.controller";
 import repository from "./subCategory.repository";
 
 async function getSubCategories(): Promise<SubCategory[]>{
@@ -28,12 +30,26 @@ async function getSubCategoryName(name:string): Promise<any[] | null>{
       if(subCategory.name === name){
         const data:any = {
           id: subCategory.id,
-          name: subCategory.name
+          name: subCategory.name,
+          products: await getSubCatProductName(subCategory.id!)
+        };
+        result.push(data)
+      }else{
+        const data:any = {
+          products: await productController.getProductName(name)
         };
         result.push(data)
       }
     }
   }
+  return result;
+}
+
+async function getSubCatProductName(id: string): Promise<any | null>{
+  const subCat: SubCategory | null = await repository.getSubCategory(id);
+  const result = {
+    products: subCat?.products
+  };
   return result;
 }
 
@@ -57,7 +73,7 @@ export default {
   getSubCategory,
   updateSubCategory,
   deleteSubCategory,
-  getSubCategoriesName,/* 
-  getSubCategoriesProductsName */
-  getSubCategoryName
+  getSubCategoriesName,
+  getSubCategoryName,
+  getSubCatProductName
 };

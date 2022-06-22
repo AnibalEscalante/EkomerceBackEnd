@@ -37,7 +37,7 @@ async function getAllProductCategoryName(name: string): Promise<Category[] | nul
         result.push(data)
       }else{
         const data:any = {
-          subCategories: await subCategoryController.getSubCategoryName(category.name)
+          subCategories: await subCategoryController.getSubCategoryName(name)
         }
         result.push(data)
       }
