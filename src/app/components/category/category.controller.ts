@@ -23,24 +23,17 @@ async function deleteCategory(id: string): Promise<Category | null>{
 }
 
 
-async function getAllProductCategoryName(name: string): Promise<Category[] | null>{
+async function getAllProductCategoryName(name: string): Promise<any | null>{
   const categories: Category[] | null = await repository.getCategories();
-  let result: Category[] | null = [];
+  let result: any | null =  null;
   if(categories){
     for(let category of categories){
       if(category.name === name){
-        const data:any = {
-          id: category.id,
-          name: category.name,
-          subCategories: await subCategoryController.getSubCategories()
-        };
-        result.push(data)
-      }else{
-        const data:any = {
-          subCategories: await subCategoryController.getSubCategoryName(name)
-        }
-        result.push(data)
+        result = category
       }
+    }
+    if(!result){
+      result = await subCategoryController.getSubCategoryName(name)
     }
   }
   return result;

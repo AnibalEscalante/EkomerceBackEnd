@@ -25,28 +25,29 @@ async function deleteProduct(id: string): Promise<Product | null>{
   return await repository.deleteProduct(id);
 }
 
-async function getProductName(name:string): Promise<any[] | null>{
-  let result: any[] | null = [];
+async function getProductName(name:string): Promise<any | null>{
+  let result: any | null = null;
   const products: Product[] | null = await repository.getProducts();
+  let pList: Product[] | null = [];
+  let parts: String[] | null = [];
   if (products){
+
     for(let product of products){
+
       if(product.brand === name){
-        const data:any = {
-          id: product.id,
-          brand: product.brand,
-          products: await repository.getProduct(product.id!)
-        };
-        result.push(data)
+        pList.push(product)
       }
+      
       if(product.description === name){
-        const data:any = {
-          id: product.id,
-          brand: product.brand,
-          products: await repository.getProduct(product.id!)
-        };
-        result.push(data) 
+        
+        pList.push(product) 
       }
+      
     }
+    const data: any = {
+      productList: pList
+    }
+    result = data
   }
   return result;
 }

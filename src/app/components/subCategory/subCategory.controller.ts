@@ -22,24 +22,17 @@ async function updateSubCategory(id: string, subCategory: Partial<SubCategory>):
 async function deleteSubCategory(id: string): Promise<SubCategory | null>{
   return await repository.deleteSubCategory(id);
 }
-async function getSubCategoryName(name:string): Promise<any[] | null>{
-  let result: any[] | null = [];
+async function getSubCategoryName(name:string): Promise<any | null>{
+  let result: any| null = null;
   const subCategories: SubCategory[] | null = await repository.getSubCategories();
   if (subCategories){
     for(let subCategory of subCategories){
       if(subCategory.name === name){
-        const data:any = {
-          id: subCategory.id,
-          name: subCategory.name,
-          products: await getSubCatProductName(subCategory.id!)
-        };
-        result.push(data)
-      }else{
-        const data:any = {
-          products: await productController.getProductName(name)
-        };
-        result.push(data)
+        result = subCategory
       }
+    }
+    if(!result){
+      result = await productController.getProductName(name)
     }
   }
   return result;

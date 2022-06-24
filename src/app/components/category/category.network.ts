@@ -79,10 +79,12 @@ router.get('/name/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:name', async (req: Request, res: Response) => {
+router.get('/filter/:name', async (req: Request, res: Response) => {
   const name: string = req.params['name'];
+  /* const name: string = req.body.name; */
+  
   try {
-    const result: Category[] | null = await controller.getAllProductCategoryName(name);
+    const result: any | null = await controller.getAllProductCategoryName(name);
     response.success(req, res, result);
   }
   catch (error) {
