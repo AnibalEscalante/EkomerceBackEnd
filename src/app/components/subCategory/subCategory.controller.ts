@@ -1,3 +1,4 @@
+import subCategory from ".";
 import { SubCategory } from "../../models/subCategory.model";
 import categoryController from "../category/category.controller";
 import productController from "../product/product.controller";
@@ -23,12 +24,12 @@ async function deleteSubCategory(id: string): Promise<SubCategory | null>{
   return await repository.deleteSubCategory(id);
 }
 async function getSubCategoryName(name:string): Promise<any | null>{
-  let result: any| null = null;
+  let result: any | null = null;
   const subCategories: SubCategory[] | null = await repository.getSubCategories();
   if (subCategories){
     for(let subCategory of subCategories){
       if(subCategory.name === name){
-        result = subCategory
+        result = await product(subCategory.products)
       }
     }
     if(!result){
@@ -38,12 +39,37 @@ async function getSubCategoryName(name:string): Promise<any | null>{
   return result;
 }
 
+
+async function product(products: string[]): Promise<any | null>{
+  let pList: any[] = [];
+  let result: any | null = null;
+  if(products){
+      for(let product of products){
+        pList.push(product)
+      }
+    const data: any = {
+      productList: pList
+    }
+    result = data
+  }
+  return result
+}
+
 async function getSubCatProductName(id: string): Promise<any | null>{
   const subCat: SubCategory | null = await repository.getSubCategory(id);
   const result = {
     products: subCat?.products
   };
   return result;
+}
+
+async function getSubCatAllProducts(idSubCategories: string[]): Promise<any[] | null>{
+  let result: any[] | null = [];
+  for(let subCategory of idSubCategories){
+    const subCat = await repository.getSubCategory(subCategory)
+    result.push(subCat?.products)
+  }
+  return result
 }
 
 async function getSubCategoriesName(idSubCategories: string[]): Promise<any[] | null>{
@@ -68,5 +94,6 @@ export default {
   deleteSubCategory,
   getSubCategoriesName,
   getSubCategoryName,
-  getSubCatProductName
+  getSubCatProductName,
+  getSubCatAllProducts
 };
