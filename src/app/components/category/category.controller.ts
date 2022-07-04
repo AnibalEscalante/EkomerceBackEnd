@@ -29,7 +29,8 @@ async function getAllProductCategoryName(name: string): Promise<any | null>{
   if(categories){
     for(let category of categories){
       if(category.name === name){
-        result = category
+        const subCatProducts = await subCategoryController.getSubCatAllProducts(category.subCategories)
+        result = await subCategoryProduct(subCatProducts)
       }
     }
     if(!result){
@@ -39,7 +40,22 @@ async function getAllProductCategoryName(name: string): Promise<any | null>{
   return result;
 }
 
-
+async function subCategoryProduct(subCatProducts: any[] | null): Promise<any | null>{
+  let pList: any[] = [];
+  let result: any | null = null;
+  if(subCatProducts){
+    for(let subCategory of subCatProducts){
+      for(let product of subCategory){
+        pList.push(product)
+      }
+    }
+    const data: any = {
+      productList: pList
+    }
+    result = data
+  }
+  return result
+}
 async function getCategoryName(id: string): Promise<any | null>{
   const category: Category | null = await repository.getCategory(id);
   const result = {
@@ -75,5 +91,6 @@ export default {
   deleteCategory,
   getCategoryName,
   getCategoriesName,
-  getAllProductCategoryName
+  getAllProductCategoryName,
+  subCategoryProduct
 };
